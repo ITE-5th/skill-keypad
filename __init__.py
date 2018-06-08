@@ -77,7 +77,7 @@ def send_message(message):
 URL_TEMPLATE = "{scheme}://{host}:{port}{path}"
 
 
-def send_message_1(message, host="localhost", port=8181, path="/core", scheme="ws"):
+def send_message_1(message, host="localhost", port=8182, path="/core", scheme="ws"):
     payload = json.dumps({
         "type": "recognizer_loop:utterance",
         "context": "",
