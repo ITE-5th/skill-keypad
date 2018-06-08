@@ -30,27 +30,29 @@ class KeypadSkill(MycroftSkill):
 
         self.callbacks = {
             0: lambda: send_message_1('caption'),
-            1: lambda: LOG.warning('NOT DEFINED'),
-            2: lambda: LOG.warning('NOT DEFINED'),
-            3: lambda: LOG.warning('NOT DEFINED'),
-            4: lambda: LOG.warning('NOT DEFINED'),
-            5: lambda: LOG.warning('NOT DEFINED'),
-            6: lambda: LOG.warning('NOT DEFINED'),
-            7: lambda: LOG.warning('NOT DEFINED'),
-            8: lambda: LOG.warning('NOT DEFINED'),
-            9: lambda: LOG.warning('NOT DEFINED'),
+            1: None,
+            2: None,
+            3: None,
+            4: None,
+            5: None,
+            6: None,
+            7: None,
+            8: None,
+            9: None,
             "A": lambda: os.system('reboot'),
             "B": lambda: os.system('systemctl poweroff -i'),
-            "C": lambda: LOG.warning('NOT DEFINED'),
-            "D": lambda: LOG.warning('NOT DEFINED'),
-            "*": lambda: LOG.warning('NOT DEFINED'),
-            "#": lambda: LOG.warning('NOT DEFINED'),
+            "C": None,
+            "D": None,
+            "*": None,
+            "#": None,
         }
 
     def keypad_callback(self, key):
         print(key)
         if self.callbacks[key] is not None:
             self.callbacks[key]()
+        else:
+            LOG.warning('NOT DEFINED')
 
     def stop(self):
         super(KeypadSkill, self).shutdown()
@@ -77,7 +79,7 @@ def send_message(message):
 URL_TEMPLATE = "{scheme}://{host}:{port}{path}"
 
 
-def send_message_1(message, host="localhost", port=8182, path="/core", scheme="ws"):
+def send_message_1(message, host="localhost", port=8181, path="/core", scheme="ws"):
     payload = json.dumps({
         "type": "recognizer_loop:utterance",
         "context": "",
