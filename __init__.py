@@ -58,16 +58,16 @@ class KeypadSkill(MycroftSkill):
 
 def send_message(message):
     def onConnected(event=None):
-        print("Connected, speaking to Mycroft...'" + message + "'")
+        LOG.info("Connected, speaking to Mycroft...'" + message + "'")
         messagebusClient.emit(
             Message("recognizer_loop:utterance",
                     data={'utterances': [message]}))
-        print("sent!")
+        LOG.info("sent!")
         messagebusClient.close()
         exit()
 
     # Establish a connection with the messagebus
-    print("Creating client")
+    LOG.info("Creating client")
     messagebusClient = WebsocketClient()
     messagebusClient.on('connected', onConnected)
 
