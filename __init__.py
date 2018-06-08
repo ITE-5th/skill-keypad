@@ -27,7 +27,7 @@ class KeypadSkill(MycroftSkill):
         self.keypad_client.start(self.keypad_callback)
 
         self.callbacks = {
-            0: lambda: os.system('say_to_mycroft caption'),
+            0: lambda: send_message('caption'),
             1: lambda: LOG('NOT DEFINED'),
             2: lambda: LOG('NOT DEFINED'),
             3: lambda: LOG('NOT DEFINED'),
