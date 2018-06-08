@@ -1,17 +1,17 @@
 # File Path Manager
 # import os
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
-import json
 import os
 
 from mycroft import MycroftSkill
 from mycroft.util.log import LOG
-from websocket import create_connection
 
 LOG.warning('Skill Keypad is Running ')
 
 try:
     from .code.keypad import Keypad
+    from mycroft.messagebus.client.ws import WebsocketClient
+    from mycroft.messagebus.message import Message
 except ImportError:
     # re-install yourself
     from msm import MycroftSkillsManager
@@ -56,21 +56,20 @@ class KeypadSkill(MycroftSkill):
         self.keypad_client.cleanup()
 
 
-URL_TEMPLATE = "{scheme}://{host}:{port}{path}"
+def send_message(message):
+    def onConnected(event=None):
+        print("Connected, speaking to Mycroft...'" + message + "'")
+        messagebusClient.emit(
+            Message("recognizer_loop:utterance",
+                    data={'utterances': [message]}))
+        print("sent!")
+        messagebusClient.close()
+        exit()
 
-
-def send_message(message, host="localhost", port=8181, path="/core", scheme="ws"):
-    payload = json.dumps({
-        "type": "recognizer_loop:utterance",
-        "context": "",
-        "data": {
-            "utterances": [message]
-        }
-    })
-    url = URL_TEMPLATE.format(scheme=scheme, host=host, port=str(port), path=path)
-    ws = create_connection(url)
-    ws.send(payload)
-    ws.close()
+    # Establish a connection with the messagebus
+    print("Creating client")
+    messagebusClient = WebsocketClient()
+    messagebusClient.on('connected', onConnected)
 
 
 def create_skill():
