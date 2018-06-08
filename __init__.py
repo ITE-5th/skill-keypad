@@ -28,21 +28,21 @@ class KeypadSkill(MycroftSkill):
 
         self.callbacks = {
             0: lambda: send_message('caption'),
-            1: lambda: LOG('NOT DEFINED'),
-            2: lambda: LOG('NOT DEFINED'),
-            3: lambda: LOG('NOT DEFINED'),
-            4: lambda: LOG('NOT DEFINED'),
-            5: lambda: LOG('NOT DEFINED'),
-            6: lambda: LOG('NOT DEFINED'),
-            7: lambda: LOG('NOT DEFINED'),
-            8: lambda: LOG('NOT DEFINED'),
-            9: lambda: LOG('NOT DEFINED'),
+            1: lambda: LOG.warning('NOT DEFINED'),
+            2: lambda: LOG.warning('NOT DEFINED'),
+            3: lambda: LOG.warning('NOT DEFINED'),
+            4: lambda: LOG.warning('NOT DEFINED'),
+            5: lambda: LOG.warning('NOT DEFINED'),
+            6: lambda: LOG.warning('NOT DEFINED'),
+            7: lambda: LOG.warning('NOT DEFINED'),
+            8: lambda: LOG.warning('NOT DEFINED'),
+            9: lambda: LOG.warning('NOT DEFINED'),
             "A": lambda: os.system('reboot'),
             "B": lambda: os.system('systemctl poweroff -i'),
-            "C": lambda: LOG('NOT DEFINED'),
-            "D": lambda: LOG('NOT DEFINED'),
-            "*": lambda: LOG('NOT DEFINED'),
-            "#": lambda: LOG('NOT DEFINED'),
+            "C": lambda: LOG.warning('NOT DEFINED'),
+            "D": lambda: LOG.warning('NOT DEFINED'),
+            "*": lambda: LOG.warning('NOT DEFINED'),
+            "#": lambda: LOG.warning('NOT DEFINED'),
         }
 
     def keypad_callback(self, key):
@@ -52,17 +52,17 @@ class KeypadSkill(MycroftSkill):
 
     def stop(self):
         super(KeypadSkill, self).shutdown()
-        LOG.info("Keypad Skill CLOSED")
+        LOG.warning("Keypad Skill CLOSED")
         self.keypad_client.cleanup()
 
 
 def send_message(message):
     def onConnected(event=None):
-        LOG.info("Connected, speaking to Mycroft...'" + message + "'")
+        LOG.warning("Connected, speaking to Mycroft...'" + message + "'")
         messagebusClient.emit(
             Message("recognizer_loop:utterance",
                     data={'utterances': [message]}))
-        LOG.info("sent!")
+        LOG.warning("sent!")
         messagebusClient.close()
         exit()
 
