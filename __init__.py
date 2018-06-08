@@ -1,10 +1,12 @@
 # File Path Manager
 # import os
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+import json
 import os
 
 from mycroft import MycroftSkill
 from mycroft.util.log import LOG
+from websocket import create_connection
 
 LOG.warning('Skill Keypad is Running ')
 
@@ -36,7 +38,7 @@ class KeypadSkill(MycroftSkill):
             8: lambda: LOG('NOT DEFINED'),
             9: lambda: LOG('NOT DEFINED'),
             "A": lambda: os.system('sudo reboot'),
-            "B": lambda: os.system('sudo shutdown now'),
+            "B": lambda: os.system('sudo shutdown'),
             "C": lambda: LOG('NOT DEFINED'),
             "D": lambda: LOG('NOT DEFINED'),
             "*": lambda: LOG('NOT DEFINED'),
@@ -52,6 +54,23 @@ class KeypadSkill(MycroftSkill):
         super(KeypadSkill, self).shutdown()
         LOG.info("Keypad Skill CLOSED")
         self.keypad_client.cleanup()
+
+
+URL_TEMPLATE = "{scheme}://{host}:{port}{path}"
+
+
+def send_message(message, host="localhost", port=8181, path="/core", scheme="ws"):
+    payload = json.dumps({
+        "type": "recognizer_loop:utterance",
+        "context": "",
+        "data": {
+            "utterances": [message]
+        }
+    })
+    url = URL_TEMPLATE.format(scheme=scheme, host=host, port=str(port), path=path)
+    ws = create_connection(url)
+    ws.send(payload)
+    ws.close()
 
 
 def create_skill():
