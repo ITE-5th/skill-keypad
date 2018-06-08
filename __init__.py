@@ -1,10 +1,12 @@
 # File Path Manager
 # import os
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+import json
 import os
 
 from mycroft import MycroftSkill
 from mycroft.util.log import LOG
+from websocket import create_connection
 
 LOG.warning('Skill Keypad is Running ')
 
@@ -27,7 +29,7 @@ class KeypadSkill(MycroftSkill):
         self.keypad_client.start(self.keypad_callback)
 
         self.callbacks = {
-            0: lambda: send_message('caption'),
+            0: lambda: send_message_1('caption'),
             1: lambda: LOG.warning('NOT DEFINED'),
             2: lambda: LOG.warning('NOT DEFINED'),
             3: lambda: LOG.warning('NOT DEFINED'),
@@ -70,6 +72,23 @@ def send_message(message):
     LOG.info("Creating client")
     messagebusClient = WebsocketClient()
     messagebusClient.on('connected', onConnected)
+
+
+URL_TEMPLATE = "{scheme}://{host}:{port}{path}"
+
+
+def send_message_1(message, host="localhost", port=8181, path="/core", scheme="ws"):
+    payload = json.dumps({
+        "type": "recognizer_loop:utterance",
+        "context": "",
+        "data": {
+            "utterances": [message]
+        }
+    })
+    url = URL_TEMPLATE.format(scheme=scheme, host=host, port=str(port), path=path)
+    ws = create_connection(url)
+    ws.send(payload)
+    ws.close()
 
 
 def create_skill():
