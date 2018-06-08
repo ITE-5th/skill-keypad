@@ -37,7 +37,7 @@ class KeypadSkill(MycroftSkill):
             7: lambda: LOG('NOT DEFINED'),
             8: lambda: LOG('NOT DEFINED'),
             9: lambda: LOG('NOT DEFINED'),
-            "A": lambda: os.system('sudo reboot'),
+            "A": lambda: os.system('reboot'),
             "B": lambda: os.system('systemctl poweroff -i'),
             "C": lambda: LOG('NOT DEFINED'),
             "D": lambda: LOG('NOT DEFINED'),
