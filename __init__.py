@@ -45,6 +45,8 @@ class KeypadSkill(MycroftSkill):
 
     def keypad_callback(self, key):
         print(key)
+        if self.callbacks[key] is not None:
+            self.callbacks[key]()
 
     def stop(self):
         super(KeypadSkill, self).shutdown()
