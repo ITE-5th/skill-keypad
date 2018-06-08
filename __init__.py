@@ -3,6 +3,7 @@
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 import json
 import os
+import time
 
 from mycroft import MycroftSkill
 from mycroft.util.log import LOG
@@ -21,13 +22,15 @@ except ImportError:
     msm = MycroftSkillsManager()
     msm.install("https://github.com/ITE-5th/skill-keypad")
 
+sleep_time = 1
+
 
 class KeypadSkill(MycroftSkill):
     def __init__(self):
         super(KeypadSkill, self).__init__("ImageCaptionSkill")
         self.keypad_client = Keypad()
         self.keypad_client.start(self.keypad_callback)
-
+        self.last_msg_time = 0
         self.callbacks = {
             0: lambda: send_message_1('caption'),
             1: None,
@@ -49,10 +52,14 @@ class KeypadSkill(MycroftSkill):
 
     def keypad_callback(self, key):
         print(key)
-        if self.callbacks[key] is not None:
-            self.callbacks[key]()
+        if (self.last_msg_time + sleep_time) < time.time():
+            self.last_msg_time = time.time()
+            if self.callbacks[key] is not None:
+                self.callbacks[key]()
+            else:
+                LOG.warning('NOT DEFINED')
         else:
-            LOG.warning('NOT DEFINED')
+            LOG.warning('Ignoring')
 
     def stop(self):
         super(KeypadSkill, self).shutdown()
