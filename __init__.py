@@ -33,8 +33,8 @@ class KeypadSkill(MycroftSkill):
         self.last_msg_time = 0
         self.callbacks = {
             0: lambda: send_message_1('caption'),
-            1: None,
-            2: None,
+            1: lambda: send_message_1('question what is this'),
+            2: lambda: send_message_1('face'),
             3: None,
             4: None,
             5: None,
