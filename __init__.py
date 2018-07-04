@@ -9,6 +9,8 @@ from mycroft import MycroftSkill
 from mycroft.util.log import LOG
 from websocket import create_connection
 
+from .file_path_manager import FilePathManager
+
 LOG.warning('Skill Keypad is Running ')
 
 try:
@@ -53,36 +55,17 @@ class KeypadSkill(MycroftSkill):
     def send_question(self):
 
         phrase_to_say = 'Please say your question'
-        question = self.get_question(phrase_to_say)
+        question = self.get_phrase(phrase_to_say)
         if question:
             send_message_1('question ' + question)
         else:
             self.speak('unable to get your question')
 
-    def get_question(self, phrase_to_say):
-        import speech_recognition as sr
-        r = sr.Recognizer()
-        self.speak(phrase_to_say)
-        with sr.Microphone() as source:
-            print('recording...')
-            audio = r.listen(source)
-        print('fin recording...')
-
-        try:
-            text = r.recognize_google(audio)
-            print("Google Speech Recognition thinks you said " + text)
-            return text
-
-        except sr.UnknownValueError:
-            print("Google Speech Recognition could not understand audio")
-        except sr.RequestError as e:
-
-            print("Could not request results from Google Speech Recognition service; {0}".format(e))
-
-        return None
-
     def keypad_callback(self, key):
         print(key)
+        camera_file = FilePathManager.resolve('/resources/click.wav')
+        os.system('aplay -Dhw:0,0 ' + camera_file)
+
         if (self.last_msg_time + sleep_time) < time.time():
             self.last_msg_time = time.time()
             if self.callbacks[key] is not None:
