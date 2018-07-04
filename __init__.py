@@ -69,7 +69,6 @@ class KeypadSkill(MycroftSkill):
             if self.callbacks[key] is not None:
                 camera_file = FilePathManager.resolve('/resources/click.wav')
                 os.system('aplay -Dhw:0,0 ' + camera_file)
-
                 self.callbacks[key]()
             else:
                 LOG.warning('NOT DEFINED')
