@@ -34,7 +34,7 @@ class KeypadSkill(MycroftSkill):
         self.callbacks = {
             0: lambda: send_message_1('caption'),
             1: lambda: send_message_1('caption'),
-            2: lambda: send_message_1('question what is this'),
+            2: lambda: self.send_question(),
             3: lambda: send_message_1('face'),
             4: lambda: send_message_1('capture'),
             5: lambda: send_message_1('add'),
@@ -49,6 +49,37 @@ class KeypadSkill(MycroftSkill):
             "*": None,
             "#": None,
         }
+
+    def send_question(self):
+
+        phrase_to_say = 'Please say your question'
+        question = self.get_question(phrase_to_say)
+        if question:
+            send_message_1('question ' + question)
+        else:
+            self.speak('unable to get your question')
+
+    def get_question(self, phrase_to_say):
+        import speech_recognition as sr
+        r = sr.Recognizer()
+        self.speak(phrase_to_say)
+        with sr.Microphone() as source:
+            print('recording...')
+            audio = r.listen(source)
+        print('fin recording...')
+
+        try:
+            text = r.recognize_google(audio)
+            print("Google Speech Recognition thinks you said " + text)
+            return text
+
+        except sr.UnknownValueError:
+            print("Google Speech Recognition could not understand audio")
+        except sr.RequestError as e:
+
+            print("Could not request results from Google Speech Recognition service; {0}".format(e))
+
+        return None
 
     def keypad_callback(self, key):
         print(key)
@@ -65,22 +96,6 @@ class KeypadSkill(MycroftSkill):
         super(KeypadSkill, self).shutdown()
         LOG.warning("Keypad Skill CLOSED")
         self.keypad_client.cleanup()
-
-
-def send_message(message):
-    def onConnected(event=None):
-        LOG.warning("Connected, speaking to Mycroft...'" + message + "'")
-        messagebusClient.emit(
-            Message("recognizer_loop:utterance",
-                    data={'utterances': [message]}))
-        LOG.warning("sent!")
-        messagebusClient.close()
-        exit()
-
-    # Establish a connection with the messagebus
-    LOG.info("Creating client")
-    messagebusClient = WebsocketClient()
-    messagebusClient.on('connected', onConnected)
 
 
 URL_TEMPLATE = "{scheme}://{host}:{port}{path}"
