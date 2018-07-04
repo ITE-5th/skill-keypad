@@ -67,8 +67,8 @@ class KeypadSkill(MycroftSkill):
         if (self.last_msg_time + sleep_time) < time.time():
             self.last_msg_time = time.time()
             if self.callbacks[key] is not None:
-                camera_file = FilePathManager.resolve('/resources/click.wav')
-                os.system('aplay -Dhw:0,0 ' + camera_file)
+                click_file = FilePathManager.resolve('/resources/click.wav')
+                os.system('aplay -Dhw:0,0 ' + click_file)
                 self.callbacks[key]()
             else:
                 LOG.warning('NOT DEFINED')
