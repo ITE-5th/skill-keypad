@@ -34,7 +34,8 @@ class KeypadSkill(MycroftSkill):
         self.keypad_client.start(self.keypad_callback)
         self.last_msg_time = 0
 
-    def callback_fn(self, command):
+    @staticmethod
+    def callback_fn(command):
         try:
             command_strip__lower = command.strip().lower()
             if command_strip__lower == "":
