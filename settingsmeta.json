@@ -3,7 +3,7 @@
   "skillMetadata": {
     "sections": [
       {
-        "name": "keys Setup",
+        "name": "keys Setup:",
         "fields": [
           {"name": "key_0", "type": "text", "label": "key 0:", "value": "caption"},
           {"name": "key_1", "type": "text", "label": "key 1:", "value": "caption"},
