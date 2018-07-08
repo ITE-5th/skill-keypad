@@ -20,7 +20,7 @@
           {"name": "key_c", "type": "text", "label": "key c:", "value": ""},
           {"name": "key_d", "type": "text", "label": "key d:", "value": ""},
           {"name": "key_star", "type": "text", "label": "key star:", "value": ""},
-          {"name": "key_hash", "type": "text", "label": "key hash:", "value": ""},
+          {"name": "key_hash", "type": "text", "label": "key hash:", "value": ""}
 
         ]
       }
