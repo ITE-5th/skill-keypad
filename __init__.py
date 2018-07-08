@@ -40,11 +40,11 @@ class KeypadSkill(MycroftSkill):
             if command_strip__lower == "":
                 return None
 
-            elif command_strip__lower == 'shutdown':
-                return lambda: os.system('systemctl poweroff -i')
-
-            elif command_strip__lower == 'reboot':
-                return lambda: os.system('reboot')
+            # if command_strip__lower == 'shutdown':
+            #     return lambda: os.system('systemctl poweroff -i')
+            #
+            # if command_strip__lower == 'reboot':
+            #     return lambda: os.system('reboot')
 
             return lambda: send_message(command)
         except:
