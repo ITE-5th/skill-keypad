@@ -1,0 +1,29 @@
+{
+  "name": "keypad Skill",
+  "skillMetadata": {
+    "sections": [
+      {
+        "name": "keys Setup",
+        "fields": [
+          {"name": "key_0", "type": "text", "label": "key 0:", "value": "caption"},
+          {"name": "key_1", "type": "text", "label": "key 1:", "value": "caption"},
+          {"name": "key_2", "type": "text", "label": "key 2:", "value": "send_question"},
+          {"name": "key_3", "type": "text", "label": "key 3:", "value": "face"},
+          {"name": "key_4", "type": "text", "label": "key 4:", "value": "capture"},
+          {"name": "key_5", "type": "text", "label": "key 5:", "value": "add"},
+          {"name": "key_6", "type": "text", "label": "key 6:", "value": "remove"},
+          {"name": "key_7", "type": "text", "label": "key 7:", "value": "what is your ip address"},
+          {"name": "key_8", "type": "text", "label": "key 8:", "value": ""},
+          {"name": "key_9", "type": "text", "label": "key 9:", "value": ""},
+          {"name": "key_a", "type": "text", "label": "key a:", "value": "reboot"},
+          {"name": "key_b", "type": "text", "label": "key b:", "value": "shutdown"},
+          {"name": "key_c", "type": "text", "label": "key c:", "value": ""},
+          {"name": "key_d", "type": "text", "label": "key d:", "value": ""},
+          {"name": "key_star", "type": "text", "label": "key star:", "value": ""},
+          {"name": "key_hash", "type": "text", "label": "key hash:", "value": ""},
+
+        ]
+      }
+    ]
+  }
+}

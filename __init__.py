@@ -33,43 +33,53 @@ class KeypadSkill(MycroftSkill):
         self.keypad_client = Keypad()
         self.keypad_client.start(self.keypad_callback)
         self.last_msg_time = 0
-        self.callbacks = {
-            0: lambda: send_message_1('caption'),
-            1: lambda: send_message_1('caption'),
-            2: lambda: self.send_question(),
-            3: lambda: send_message_1('face'),
-            4: lambda: send_message_1('capture'),
-            5: lambda: send_message_1('add'),
-            6: lambda: send_message_1('remove'),
-            7: lambda: send_message_1('what is your ip address'),
-            8: None,
-            9: None,
-            "A": lambda: os.system('reboot'),
-            "B": lambda: os.system('systemctl poweroff -i'),
-            "C": None,
-            "D": None,
-            "*": None,
-            "#": None,
+
+    def callback_fn(self, command):
+        try:
+            command_strip__lower = command.strip().lower()
+            if command_strip__lower == "":
+                return None
+
+            elif command_strip__lower == 'shutdown':
+                return os.system('systemctl poweroff -i')
+
+            elif command_strip__lower == 'reboot':
+                return lambda: os.system('reboot')
+
+            return lambda: send_message(command)
+        except:
+            return None
+
+    def get_callbacks(self):
+        return {
+            0: self.callback_fn(self.settings.get("key_0", "")),
+            1: self.callback_fn(self.settings.get("key_1", "")),
+            2: self.callback_fn(self.settings.get("key_2", "")),
+            3: self.callback_fn(self.settings.get("key_3", "")),
+            4: self.callback_fn(self.settings.get("key_4", "")),
+            5: self.callback_fn(self.settings.get("key_5", "")),
+            6: self.callback_fn(self.settings.get("key_6", "")),
+            7: self.callback_fn(self.settings.get("key_7", "")),
+            8: self.callback_fn(self.settings.get("key_8", "")),
+            9: self.callback_fn(self.settings.get("key_9", "")),
+            "A": self.callback_fn(self.settings.get("key_a", "")),
+            "B": self.callback_fn(self.settings.get("key_b", "")),
+            "C": self.callback_fn(self.settings.get("key_c", "")),
+            "D": self.callback_fn(self.settings.get("key_d", "")),
+            "*": self.callback_fn(self.settings.get("key_star", "")),
+            "#": self.callback_fn(self.settings.get("key_hash", "")),
         }
-
-    def send_question(self):
-
-        phrase_to_say = 'Please say your question'
-        question = self.get_phrase(phrase_to_say)
-        if question:
-            send_message_1('question ' + question)
-        else:
-            self.speak('unable to get your question')
 
     def keypad_callback(self, key):
         print(key)
 
         if (self.last_msg_time + sleep_time) < time.time():
             self.last_msg_time = time.time()
-            if self.callbacks[key] is not None:
+            callbacks = self.get_callbacks()
+            if callbacks[key] is not None:
                 click_file = FilePathManager.resolve('/resources/click.wav')
                 os.system('aplay -Dhw:0,0 ' + click_file)
-                self.callbacks[key]()
+                callbacks[key]()
             else:
                 LOG.warning('NOT DEFINED')
         else:
@@ -84,7 +94,7 @@ class KeypadSkill(MycroftSkill):
 URL_TEMPLATE = "{scheme}://{host}:{port}{path}"
 
 
-def send_message_1(message, host="localhost", port=8181, path="/core", scheme="ws"):
+def send_message(message, host="localhost", port=8181, path="/core", scheme="ws"):
     payload = json.dumps({
         "type": "recognizer_loop:utterance",
         "context": "",
