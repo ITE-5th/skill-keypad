@@ -41,7 +41,7 @@ class KeypadSkill(MycroftSkill):
             4: lambda: send_message_1('capture'),
             5: lambda: send_message_1('add'),
             6: lambda: send_message_1('remove'),
-            7: None,
+            7: lambda: send_message_1('what is your ip address'),
             8: None,
             9: None,
             "A": lambda: os.system('reboot'),
