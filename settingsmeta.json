@@ -7,7 +7,7 @@
         "fields": [
           {"name": "key_0", "type": "text", "label": "key 0:", "value": "caption"},
           {"name": "key_1", "type": "text", "label": "key 1:", "value": "caption"},
-          {"name": "key_2", "type": "text", "label": "key 2:", "value": "send_question"},
+          {"name": "key_2", "type": "text", "label": "key 2:", "value": "question"},
           {"name": "key_3", "type": "text", "label": "key 3:", "value": "face"},
           {"name": "key_4", "type": "text", "label": "key 4:", "value": "capture"},
           {"name": "key_5", "type": "text", "label": "key 5:", "value": "add"},
