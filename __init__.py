@@ -5,8 +5,8 @@ import json
 import os
 import time
 
-from mycroft.util import play_wav
 from mycroft import MycroftSkill
+from mycroft.util import play_wav
 from mycroft.util.log import LOG
 from websocket import create_connection
 
