@@ -5,6 +5,7 @@ import json
 import os
 import time
 
+from mycroft.util import play_wav
 from mycroft import MycroftSkill
 from mycroft.util.log import LOG
 from websocket import create_connection
@@ -79,7 +80,8 @@ class KeypadSkill(MycroftSkill):
             callbacks = self.get_callbacks()
             if callbacks[key] is not None:
                 click_file = FilePathManager.resolve('/resources/click.wav')
-                os.system('aplay -Dhw:0,0 ' + click_file)
+                # os.system('aplay -Dhw:0,0 ' + )
+                play_wav(click_file)
                 callbacks[key]()
             else:
                 LOG.warning('NOT DEFINED')
